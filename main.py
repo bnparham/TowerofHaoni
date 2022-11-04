@@ -7,7 +7,7 @@ import sys,os
 from PyQt5.QtWidgets import QDialog , QApplication ,QLabel
 from random import choice
 
-num_of_disk = 6
+num_of_disk = 3
 
 class mainWindowUI(QDialog):
     disks_lbl = {}
@@ -17,16 +17,18 @@ class mainWindowUI(QDialog):
         'B' : 0,
         'C' : 0
     }
-    res = []
-    count = 0
-    total_x = {}
+    res_forward = []
+    res_backward = []
+    movement = 0
     def __init__(self):
         super().__init__()
         loadUi("main.ui", self)
         self.setWindowTitle("Tower of Hanoi GUI")
         self.setFixedSize(self.width(),self.height())
         self.create_disks(self)
-        self.pushButton.clicked.connect(lambda x : self.goToNextRound(self.count))
+        self.pushButton.clicked.connect(lambda x : self.goToNextRound(self.movement))
+        self.pushButton_2.clicked.connect(lambda x : self.goToPerviousRound(self.movement))
+        self.pushButton_2.setHidden(True)
         self.check_col["A"] = num_of_disk
         self.TowerOfHanoi(num_of_disk,'A','C','B')
         self.show()
@@ -46,24 +48,22 @@ class mainWindowUI(QDialog):
                 count += 1
                 width -= 30
                 self.disks_lbl[biggest].setGeometry((lowest_x+(count*15)),biggest_y,width,20)
-                self.total_x[biggest] = lowest_x+(count*15)
             else:
                 self.disks_lbl[biggest].setGeometry((lowest_x),biggest_y,width,20)
-                self.total_x[biggest] = lowest_x
             biggest -= 1
             biggest_y -= 20
             
 
-    def goToNextRound(self,count):
-        li = self.res[count]
+    def goToPerviousRound(self,movement):
+        li = self.res_backward[movement-1]
         self.close()
         # print(li)
         img_id = li[0]
         start = li[1]
         destention = li[2]
         check_col = self.check_col[destention]
-        print(f"move {img_id} from {start} to {destention} | round : {self.count+1}")
-        self.Details.setText(f"move {img_id} from {start} to {destention} | round : {self.count+1}")
+        print(f"backward : move {img_id} from {start} to {destention} | round : {self.movement-1}")
+        self.Details.setText(f"backward : move {img_id} from {start} to {destention} | round : {self.movement-1}")
         if(start == "A" and destention == "B"):
             x = self.disks_lbl[img_id].x() + 300
         elif(start == "A" and destention == "C"):
@@ -86,20 +86,63 @@ class mainWindowUI(QDialog):
             self.check_col[destention] += 1
             self.check_col[start] -= 1
         self.show()
-        self.count += 1
-        if(self.count == (2**num_of_disk)-1):
+        self.movement -= 1
+        if(self.movement == 0):
+            self.pushButton_2.setHidden(True)
+            self.pushButton.setHidden(False)
+
+    def goToNextRound(self,movement):
+        li = self.res_forward[movement]
+        self.close()
+        # print(li)
+        img_id = li[0]
+        start = li[1]
+        destention = li[2]
+        check_col = self.check_col[destention]
+        print(f"forward : move {img_id} from {start} to {destention} | round : {self.movement+1}")
+        self.Details.setText(f"forward : move {img_id} from {start} to {destention} | round : {self.movement+1}")
+        if(start == "A" and destention == "B"):
+            x = self.disks_lbl[img_id].x() + 300
+        elif(start == "A" and destention == "C"):
+            x = self.disks_lbl[img_id].x() + 600
+        elif(start == "B" and destention == "C"):
+            x = self.disks_lbl[img_id].x() + 300
+        elif(start == "B" and destention == "A"):
+            x = self.disks_lbl[img_id].x() - 300
+        elif(start == "C" and destention == "A"):
+            x = self.disks_lbl[img_id].x() - 600
+        elif(start == "C" and destention == "B"):
+            x = self.disks_lbl[img_id].x() - 300
+            print(x)
+        if(check_col == 0):
+            self.disks_lbl[img_id].setGeometry(x,480,self.disks_lbl[img_id].width(),20)
+            self.check_col[destention] += 1
+            self.check_col[start] -= 1
+        else:
+            self.disks_lbl[img_id].setGeometry(x,480-(check_col*20),self.disks_lbl[img_id].width(),20)
+            self.check_col[destention] += 1
+            self.check_col[start] -= 1
+        self.show()
+        self.movement += 1
+        self.pushButton_2.setHidden(False)
+        if(self.movement == (2**num_of_disk)-1):
             self.pushButton.setHidden(True)
+
 
     def TowerOfHanoi(self,n=num_of_disk , source="A", destination="C", auxiliary="B"):
         if n==1:
             x = [1,source,destination]
-            self.res.append(x)
+            y = [1,destination,source]
+            self.res_forward.append(x)
+            self.res_backward.append(y)
             # print ("Move disk 1 from source",source,"to destination",destination)
             return  
         x = [n,source,destination]
+        y = [n,destination,source]
         self.TowerOfHanoi(n-1, source, auxiliary, destination)
         # print ("Move disk",n,"from source",source,"to destination",destination)
-        self.res.append(x)
+        self.res_forward.append(x)
+        self.res_backward.append(y)
         self.TowerOfHanoi(n-1, auxiliary, destination, source)
         
         
