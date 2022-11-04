@@ -54,9 +54,9 @@ color :#fff;</string>
   <widget class="QLabel" name="Details">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>190</x>
      <y>20</y>
-     <width>921</width>
+     <width>861</width>
      <height>51</height>
     </rect>
    </property>
@@ -85,6 +85,48 @@ border:1px solid #df2569;</string>
    </property>
    <property name="text">
     <string>Previous Round</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>51</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #2C69D2</string>
+   </property>
+   <property name="text">
+    <string>Change Colors</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="colorBtn">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-size:20px;
+border-radius : 10%;
+background-color: Transparent ;
+color :#df2569;
+border:1px solid #2C69D2;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

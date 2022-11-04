@@ -28,6 +28,7 @@ class mainWindowUI(QDialog):
         self.create_disks(self)
         self.pushButton.clicked.connect(lambda x : self.goToNextRound(self.movement))
         self.pushButton_2.clicked.connect(lambda x : self.goToPerviousRound(self.movement))
+        self.colorBtn.clicked.connect(self.goToChangeColor)
         self.pushButton_2.setHidden(True)
         self.check_col["A"] = num_of_disk
         self.TowerOfHanoi(num_of_disk,'A','C','B')
@@ -53,7 +54,11 @@ class mainWindowUI(QDialog):
             biggest -= 1
             biggest_y -= 20
             
-
+    def goToChangeColor(self):
+        color_range = range(256)
+        for i in range(1,num_of_disk+1):
+            self.disks_lbl[i].setStyleSheet("background-color:rgb({},{},{};)".format(choice(color_range),choice(color_range),choice(color_range))) 
+    
     def goToPerviousRound(self,movement):
         li = self.res_backward[movement-1]
         self.close()
