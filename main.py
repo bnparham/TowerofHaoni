@@ -7,7 +7,7 @@ import sys,os
 from PyQt5.QtWidgets import QDialog , QApplication ,QLabel
 from random import choice
 
-num_of_disk = 3
+num_of_disk = 4
 
 class mainWindowUI(QDialog):
     disks_lbl = {}
@@ -61,8 +61,7 @@ class mainWindowUI(QDialog):
     
     def goToPerviousRound(self,movement):
         li = self.res_backward[movement-1]
-        self.close()
-        # print(li)
+        # self.close()
         img_id = li[0]
         start = li[1]
         destention = li[2]
@@ -81,7 +80,6 @@ class mainWindowUI(QDialog):
             x = self.disks_lbl[img_id].x() - 600
         elif(start == "C" and destention == "B"):
             x = self.disks_lbl[img_id].x() - 300
-            print(x)
         if(check_col == 0):
             self.disks_lbl[img_id].setGeometry(x,480,self.disks_lbl[img_id].width(),20)
             self.check_col[destention] += 1
@@ -90,7 +88,7 @@ class mainWindowUI(QDialog):
             self.disks_lbl[img_id].setGeometry(x,480-(check_col*20),self.disks_lbl[img_id].width(),20)
             self.check_col[destention] += 1
             self.check_col[start] -= 1
-        self.show()
+        # self.show()
         self.movement -= 1
         if(self.movement == 0):
             self.pushButton_2.setHidden(True)
@@ -98,8 +96,7 @@ class mainWindowUI(QDialog):
 
     def goToNextRound(self,movement):
         li = self.res_forward[movement]
-        self.close()
-        # print(li)
+        # self.close()
         img_id = li[0]
         start = li[1]
         destention = li[2]
@@ -118,7 +115,6 @@ class mainWindowUI(QDialog):
             x = self.disks_lbl[img_id].x() - 600
         elif(start == "C" and destention == "B"):
             x = self.disks_lbl[img_id].x() - 300
-            print(x)
         if(check_col == 0):
             self.disks_lbl[img_id].setGeometry(x,480,self.disks_lbl[img_id].width(),20)
             self.check_col[destention] += 1
@@ -127,7 +123,7 @@ class mainWindowUI(QDialog):
             self.disks_lbl[img_id].setGeometry(x,480-(check_col*20),self.disks_lbl[img_id].width(),20)
             self.check_col[destention] += 1
             self.check_col[start] -= 1
-        self.show()
+        # self.show()
         self.movement += 1
         self.pushButton_2.setHidden(False)
         if(self.movement == (2**num_of_disk)-1):
