@@ -1,21 +1,23 @@
 # --- DataStructure | TowerOfHanoi GUI with pyqt5
-# --- University of guilan
+# --- University of Guilan
 
 from PyQt5.QtGui import QPixmap
 from PyQt5.uic import loadUi
 import sys,os
 from PyQt5.QtWidgets import QDialog , QApplication ,QLabel
 from random import choice
+from dllinkedList import Node, doubleLinkedList
+
+
 
 num_of_disk = 4
 
 class mainWindowUI(QDialog):
     disks_lbl = {}
-    images = {}
     check_col = {
         'A' : 0,
         'B' : 0,
-        'C' : 0
+        'C' : 0,
     }
     res_forward = []
     res_backward = []
@@ -26,14 +28,16 @@ class mainWindowUI(QDialog):
         self.setWindowTitle("Tower of Hanoi GUI")
         self.setFixedSize(self.width(),self.height())
         self.create_disks(self)
-        self.pushButton.clicked.connect(lambda x : self.goToNextRound(self.movement))
-        self.pushButton_2.clicked.connect(lambda x : self.goToPerviousRound(self.movement))
+        self.dllinked = doubleLinkedList()
+        self.TowerOfHanoi(num_of_disk,'A','C','B')
+        self.cur_next = self.dllinked.head
+        self.cur_back = self.dllinked.head
+        self.pushButton.clicked.connect(lambda x : self.goToNextRound(self.cur_next))
+        self.pushButton_2.clicked.connect(lambda x : self.goToPreviousRound(self.cur_back))
         self.colorBtn.clicked.connect(self.goToChangeColor)
         self.pushButton_2.setHidden(True)
         self.check_col["A"] = num_of_disk
-        self.TowerOfHanoi(num_of_disk,'A','C','B')
-        self.show()
-        
+        self.show()       
     def create_disks(self,instance):
         color_range = range(256)
         biggest = num_of_disk
@@ -59,12 +63,12 @@ class mainWindowUI(QDialog):
         for i in range(1,num_of_disk+1):
             self.disks_lbl[i].setStyleSheet("background-color:rgb({},{},{};)".format(choice(color_range),choice(color_range),choice(color_range))) 
     
-    def goToPerviousRound(self,movement):
-        li = self.res_backward[movement-1]
+    def goToPreviousRound(self,Node:Node):
+        li = Node.data
         # self.close()
         img_id = li[0]
-        start = li[1]
-        destention = li[2]
+        start = li[2]
+        destention = li[1]
         check_col = self.check_col[destention]
         print(f"backward : move {img_id} from {start} to {destention} | round : {self.movement-1}")
         self.Details.setText(f"backward : move {img_id} from {start} to {destention} | round : {self.movement-1}")
@@ -90,12 +94,16 @@ class mainWindowUI(QDialog):
             self.check_col[start] -= 1
         # self.show()
         self.movement -= 1
+        self.cur_next = self.cur_back
+        self.cur_back = self.cur_back.Previous
         if(self.movement == 0):
             self.pushButton_2.setHidden(True)
             self.pushButton.setHidden(False)
+        elif(self.movement < (2**self.movement)-1):
+            self.pushButton.setHidden(False)
 
-    def goToNextRound(self,movement):
-        li = self.res_forward[movement]
+    def goToNextRound(self,Node:Node):
+        li = Node.data
         # self.close()
         img_id = li[0]
         start = li[1]
@@ -124,29 +132,32 @@ class mainWindowUI(QDialog):
             self.check_col[destention] += 1
             self.check_col[start] -= 1
         # self.show()
+        self.cur_back = self.cur_next
+        self.cur_next = self.cur_next.Next
         self.movement += 1
         self.pushButton_2.setHidden(False)
         if(self.movement == (2**num_of_disk)-1):
             self.pushButton.setHidden(True)
 
 
+
     def TowerOfHanoi(self,n=num_of_disk , source="A", destination="C", auxiliary="B"):
         if n==1:
-            x = [1,source,destination]
-            y = [1,destination,source]
-            self.res_forward.append(x)
-            self.res_backward.append(y)
+            li = [1,source,destination]
+            self.dllinked.append(li)
             # print ("Move disk 1 from source",source,"to destination",destination)
             return  
-        x = [n,source,destination]
-        y = [n,destination,source]
+        li = [n,source,destination]
         self.TowerOfHanoi(n-1, source, auxiliary, destination)
         # print ("Move disk",n,"from source",source,"to destination",destination)
-        self.res_forward.append(x)
-        self.res_backward.append(y)
+        self.dllinked.append(li)
         self.TowerOfHanoi(n-1, auxiliary, destination, source)
-        
+       
+     
+
+
         
 app = QApplication(sys.argv)
 mainUI = mainWindowUI()
 sys.exit(app.exec_())
+
