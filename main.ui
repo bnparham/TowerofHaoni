@@ -129,6 +129,27 @@ border:1px solid #2C69D2;</string>
     <string/>
    </property>
   </widget>
+  <widget class="QPushButton" name="exitbtn">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-size:20px;
+color: rgb(85, 85, 255);
+border-radius : 10%;
+background-color: Transparent ;
+
+border:1px solid #2C69D2;</string>
+   </property>
+   <property name="text">
+    <string>exit</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
