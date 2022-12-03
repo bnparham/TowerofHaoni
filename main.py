@@ -1,13 +1,11 @@
 # --- DataStructure | TowerOfHanoi GUI with pyqt5
 # --- University of Guilan
 
-from PyQt5.QtGui import QPixmap
 from PyQt5.uic import loadUi
-import sys,os
+import sys
 from PyQt5.QtWidgets import QDialog , QApplication ,QLabel
 from random import choice
 from dllinkedList import Node, doubleLinkedList
-
 
 
 class firstWindowUI(QDialog):
@@ -179,7 +177,6 @@ class mainWindowUI(QDialog):
 
         
 app = QApplication(sys.argv)
-# mainUI = mainWindowUI()
 firstUI = firstWindowUI()
 sys.exit(app.exec_())
 
