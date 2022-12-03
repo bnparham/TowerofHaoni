@@ -4,8 +4,8 @@ University of Guilan
 Author : Parham Baradaran Noviery
 
 Collaborators :
-    Kiarash Grayli
-    Yalda Seyedizade
+    Kiarash Grayli |
+    Yalda Seyedizade |
     Erfun Najafipour
 
 ## Notice :
