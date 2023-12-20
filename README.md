@@ -3,11 +3,6 @@ University of Guilan
 
 Author : Parham Baradaran Noviery
 
-Collaborators :
-    Kiarash Grayeli |
-    Yalda Seyedizade |
-    Erfun Najafipour
-
 ## Notice :
 
 1 - for execute and test this program you should install pyqt5 module on your system.
